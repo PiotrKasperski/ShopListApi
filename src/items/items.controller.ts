@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Put, Param, Delete, Query, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, Query, Logger, UseGuards } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { query } from 'express';
-
+import JwtAuthenticationGuard from 'src/authentication/guards/jwt-authentication.guard';
+@UseGuards(JwtAuthenticationGuard)
 @Controller('items')
 export class ItemsController {
   private readonly logger = new Logger(ItemsController.name);
