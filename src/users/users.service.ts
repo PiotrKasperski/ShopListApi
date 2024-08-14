@@ -20,7 +20,9 @@ export class UsersService implements OnModuleInit {
     return this.userRepository.save(createUserDto);
   }
   async findByUsername(username: string) {
-    const user = await this.userRepository.findOne({ userName: username });
+    const user = await this.userRepository.findOne({
+      where: { userName: username },
+    });
     this.logger.log(user);
     return user;
   }

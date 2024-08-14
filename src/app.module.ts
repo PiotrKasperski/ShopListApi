@@ -12,12 +12,13 @@ import { ShopListsModule } from './shop-lists/shop-lists.module';
 import { ItemsModule } from './items/items.module';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    validationSchema: Joi.object(
-      {
+  imports: [
+    ConfigModule.forRoot({
+      validationSchema: Joi.object({
         POSTGRES_HOST: Joi.string().required(),
         POSTGRES_PORT: Joi.number().required(),
         POSTGRES_USER: Joi.string().required(),
@@ -26,11 +27,19 @@ import { AuthenticationModule } from './authentication/authentication.module';
         PORT: Joi.number(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
-      }
-    )
-  }),
-  DatabaseModule, ShopListsModule, ItemsModule, UsersModule, AuthenticationModule],
-  controllers: [AppController,]
-,  providers: [AppService],
+      }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'front'),
+      exclude: ['/api/(.*)'],
+    }),
+    DatabaseModule,
+    ShopListsModule,
+    ItemsModule,
+    UsersModule,
+    AuthenticationModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
