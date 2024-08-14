@@ -1,21 +1,28 @@
 import { Repository } from 'typeorm';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { create } from 'domain';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   private readonly logger = new Logger(UsersService.name);
-  constructor(@InjectRepository(User) private userRepository:Repository<User>){};
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) { }
+  async onModuleInit() {
+    const user = await this.findByUsername('klonek');
+    if (!user) this.create({ userName: 'klonek', password: 'asdf' });
+  }
   async create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
   }
-  async findByUsername(username: string){
-    const user = await this.userRepository.findOne({userName: username});
-    this.logger.log(user)
-    return user
+  async findByUsername(username: string) {
+    const user = await this.userRepository.findOne({ userName: username });
+    this.logger.log(user);
+    return user;
   }
 
   findAll() {
@@ -23,7 +30,7 @@ export class UsersService {
   }
 
   async findOne(id: number) {
-    return this.userRepository.findOne({where:{userId: id}})
+    return this.userRepository.findOne({ where: { userId: id } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

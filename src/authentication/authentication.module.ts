@@ -9,22 +9,22 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
-  imports:[
-    forwardRef(()=>UsersModule),
+  imports: [
+    forwardRef(() => UsersModule),
     PassportModule,
     ConfigModule,
     JwtModule.registerAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useFactory: async (configService:ConfigService)=>({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET'),
-        signOptions:{
-          expiresIn: `${configService.get('JWT_EXPIRATION_TIME')}s`
-        }
-      })
-    })
+        signOptions: {
+          expiresIn: `100d`,
+        },
+      }),
+    }),
   ],
-  providers: [AuthenticationService,LocalStrategy,JwtStrategy],
-  exports:[AuthenticationService]
+  providers: [AuthenticationService, LocalStrategy, JwtStrategy],
+  exports: [AuthenticationService],
 })
-export class AuthenticationModule {}
+export class AuthenticationModule { }
