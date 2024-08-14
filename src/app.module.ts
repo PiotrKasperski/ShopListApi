@@ -30,7 +30,7 @@ import { join } from 'path';
       }),
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'front'),
+      rootPath: join(__dirname, 'front'),
       exclude: ['/api/(.*)'],
     }),
     DatabaseModule,
@@ -42,4 +42,4 @@ import { join } from 'path';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
