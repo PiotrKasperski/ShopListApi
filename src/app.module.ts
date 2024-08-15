@@ -27,10 +27,14 @@ import { join } from 'path';
         PORT: Joi.number(),
         JWT_SECRET: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.string().required(),
+        NODE_ENV: Joi.string().valid('development', 'production'),
       }),
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, 'front'),
+      rootPath:
+        process.env.NODE_ENV === 'production'
+          ? join(__dirname, 'front')
+          : join(__dirname, '..', 'front'),
       exclude: ['/api/(.*)'],
     }),
     DatabaseModule,
@@ -42,4 +46,4 @@ import { join } from 'path';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
