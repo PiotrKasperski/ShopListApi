@@ -7,8 +7,8 @@ import Item from './entities/item.entity';
 import ShopList from 'src/shop-lists/entities/shop-list.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Item, ShopList])],
+  imports: [TypeOrmModule.forFeature([Item, ShopList])],
   controllers: [ItemsController],
-  providers: [ItemsService]
+  providers: [ItemsService],
 })
-export class ItemsModule {}
+export class ItemsModule { }
