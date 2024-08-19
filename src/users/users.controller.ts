@@ -43,7 +43,6 @@ export class UsersController {
       user.userName,
       user.password,
     );
-    this.logger.log(token);
     return token;
   }
 

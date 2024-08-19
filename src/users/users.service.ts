@@ -7,15 +7,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { create } from 'domain';
 
 @Injectable()
-export class UsersService implements OnModuleInit {
+export class UsersService {
   private readonly logger = new Logger(UsersService.name);
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
   ) { }
-  async onModuleInit() {
-    const user = await this.findByUsername('klonek');
-    if (!user) this.create({ userName: 'klonek', password: 'asdf' });
-  }
   async create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);
   }
